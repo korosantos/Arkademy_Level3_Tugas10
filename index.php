@@ -40,9 +40,6 @@
   								}
   								else{
   									$sql_produk = mysqli_query($con, "select * from produk");
-
-
-
   								}
   							 ?>
   						
@@ -112,6 +109,7 @@
         	<div class="form-group">
         		<input type="number" placeholder="Masukan jumlah" name="ed_jumlah" class="form-control" value="<?= $data['jumlah']; ?>">
         	</div>
+          <input type="text" hidden="" name="id" value="<?= $data['id']; ?>">
 
         
       </div>
@@ -121,15 +119,20 @@
         <?php 
 
         	if (isset($_POST['edit_produk'])) {
-        		$id = $data['id'];
+        		$id = $_POST['id'];
         		$nama_produk = $_POST['ed_namaProduk'];
         		$keterangan = $_POST['ed_keterangan'];
         		$harga = $_POST['ed_harga'];
         		$jumlah = $_POST['ed_jumlah'];
 
         		$sql_edit = mysqli_query($con, "update produk set nama_produk='$nama_produk', keterangan='$keterangan',harga='$harga',jumlah='$jumlah' where id='$id'");
-        		if ($sql_edit) {
-        			header("location:index.php");
+        		if ($sql_edit > 0) {
+        			$message = 'Data Berhasil Diubah';
+
+                    echo "<SCRIPT> 
+                        alert('$message')
+                        window.location.replace('index.php');
+                    </SCRIPT>";
         		}
         	}
 
@@ -145,13 +148,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Hapus Produk</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Apakah Anda Ingin Menghapus Data Barang <b> <?= $data['nama_produk']; ?> </b> ? </p>
+        <p>Apakah Anda Ingin Menghapus Data Produk <b> <?= $data['nama_produk']; ?> </b> ? </p>
+        <input type="text" hidden="" name="id" value="<?= $data['id']; ?>">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -163,12 +167,15 @@
 
 <?php 
 	if (isset($_POST['hapus_produk'])) {
-		$id = $data['id'];
+		$id = $_POST['id'];
 		$sql_hapus = mysqli_query($con, "delete from produk where id='$id'");
-		if ($sql_hapus) {
-		?> 
-			<script>alert('Data Berhasil Dihapus');</script>
-		 <?php
+		if ($sql_hapus > 0) {
+		$message = 'Data Berhasil Dihapus';
+
+                    echo "<SCRIPT> 
+                        alert('$message')
+                        window.location.replace('index.php');
+                    </SCRIPT>";
 	}
 	}
 
@@ -226,8 +233,13 @@
         		$jumlah = $_POST['in_jumlah'];
 
         		$sql_tambah = mysqli_query($con, "insert into produk set nama_produk='$nama_produk', keterangan='$keterangan',harga='$harga',jumlah='$jumlah'");
-        		if ($sql_tambah) {
-        			header("location:index.php");
+        		if ($sql_tambah > 0) {
+        			$message = 'Data Berhasil Ditambah';
+
+                    echo "<SCRIPT> 
+                        alert('$message')
+                        window.location.replace('index.php');
+                    </SCRIPT>";
         		}
         	}
 
